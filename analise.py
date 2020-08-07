@@ -1,11 +1,12 @@
-#Script usado no jupyter-notebook
 %matplotlib inline
 import pandas as pd
-import json
+import numpy as np
 from datetime import datetime, timedelta
+import json
 import matplotlib.pyplot as plt
-plt.rc('figure', figsize = (50, 16))
 
+#Tamanho do gráfico
+plt.rc('figure', figsize = (50, 16))
 #Mes de referencia
 mes = '08'
 ano = '2020'
@@ -13,19 +14,8 @@ ano = '2020'
 arquivo = 'json/cdr_{}-{}.json'.format(ano, mes)
 #Minutos utilizados na amostragem
 intervalo = 15
-
-## Metodo para gerar grafico
-def gerar_grafico(dados, legenda):
-    grafico = plt.figure()
-    g1 = grafico.add_subplot(2, 2, 1)
-    g1.bar(dados['dia'], dados['chamadas'])
-    g1.set_title(
-        'Quantidade de chamadas X Dia do Mês - Mídia das {} (intervalo de {} minutos)'.format(
-            legenda,
-            intervalo
-        )
-    )
-
+#Escala Y
+escala_y = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
 
 ## Metodo para gerar resultado totalizado
 def totalizar(chamadas_entrada, hora_inicial, intervalo_analisado=30):
@@ -49,8 +39,7 @@ def totalizar(chamadas_entrada, hora_inicial, intervalo_analisado=30):
         intervalo_analisado -= 1
         data_inicial = data_inicial + timedelta(days=1)
 
-    dados = pd.DataFrame(dados_totalizados)
-    gerar_grafico(dados, hora_inicial)
+    return pd.DataFrame(dados_totalizados)
 
 ##Recuperando dados
 try:
@@ -62,15 +51,28 @@ except:
     
 df = pd.DataFrame(dados)
 df['calldate'] = pd.to_datetime(df['calldate'])
-
 #Filtrando somente chamadas de entrada
 selecao = (df['accountcode'] == 'ENT') & (df['dst'] == 'atendimento2')
-
 chamadas_entrada = df[selecao]
-
-#Intervalo das 08:40
-totalizar(chamadas_entrada, '08:40')
-#Intervalo das 10:00
-totalizar(chamadas_entrada, '10:00')
-#Intervalo das 11:00
-totalizar(chamadas_entrada, '11:00')
+#Tratando intervalos
+dados_0840 = totalizar(chamadas_entrada, '08:40')
+dados_1000 = totalizar(chamadas_entrada, '10:00')
+dados_1120 = totalizar(chamadas_entrada, '11:20')
+#Gerando grafico
+imagem = plt.figure()
+grafico = imagem.add_subplot(2, 2, 1)
+grafico.plot(dados_0840['dia'], dados_0840['chamadas'], 'o-', linewidth=2)
+grafico.plot(dados_1000['dia'], dados_1000['chamadas'], 'o-', linewidth=2)
+grafico.plot(dados_1120['dia'], dados_1120['chamadas'], 'o-', linewidth=2)
+grafico.grid(linestyle='-', linewidth=2)
+grafico.set_title("Chamadas X Mídia (considerando intervalo de {} minutos)".format(intervalo))
+grafico.set_xlabel("Dia")
+grafico.set_ylabel("Chamadas")
+grafico.set_yticks(escala_y)
+grafico.legend(["08:40","10:00",'11:20'], loc=4)
+#Salvando grafico em um arquivo png
+imagem.savefig(
+    'graficos/graf_{}-{}.png'.format(ano, mes), 
+    dpi = 300, 
+    bbox_inches = 'tight'
+)
