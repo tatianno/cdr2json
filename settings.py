@@ -1,6 +1,6 @@
 db = {
     'host' : 'localhost',
-    'user' : 'root',
-    'passwd' : '@st016de',
+    'user' : 'db_user',
+    'passwd' : 'db_pass',
     'database' : 'asteriskcdr',
 }
