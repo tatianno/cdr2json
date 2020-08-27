@@ -8,12 +8,10 @@ Com esse script é possível extrair os dados da tabela cdr do asterisk para um 
 > `$ pip3 install -r requeriments.txt`
 
 3- Execute o script, temos 3 opções:
-- Trazer os dados do mês corrente:
+- Trazer os dados do dia corrente:
 > `$ python3 main.py`
 - Trazer os dados de um mês específico:
 > `$ python3 main.py 2020-08`
-- Trazer todos os dados do banco:
-> `$ python3 main.py all`
 
 O script analise.py foi escrito para analisar o volume de chamadas dentro do jupyter-notebook.
 Podemos definir o mês de analise, dado usado também para abrir o arquivo json (linha 11)
