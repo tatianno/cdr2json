@@ -15,8 +15,10 @@ Com esse script é possível extrair os dados da tabela cdr do asterisk para um 
 
 O script analise.py foi escrito para analisar o volume de chamadas dentro do jupyter-notebook.
 Podemos definir o mês de analise, dado usado também para abrir o arquivo json (linha 11)
+```
 mes = '08'
 ano = '2020'
+```
 e também os horários desejados (linha 58)
 ```
 dados_0840 = totalizar(chamadas_entrada, '08:40')
