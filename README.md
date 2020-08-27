@@ -7,8 +7,8 @@ Com esse script é possível extrair os dados da tabela cdr do asterisk para um 
 > `$ pip3 install -r requeriments.txt`
 3- Execute o script, temos 3 opções:
 - Trazer os dados do mês corrente:
-> `python3 main.py`
+> `$ python3 main.py`
 - Trazer os dados de um mês específico:
-> `python3 main.py 2020-08`
+> `$ python3 main.py 2020-08`
 - Trazer todos os dados do banco:
-> `python3 main.py all`
+> `$ python3 main.py all`
